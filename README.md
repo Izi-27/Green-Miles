@@ -235,6 +235,7 @@ Labels: area/frontend, area/backend, area/zk, area/integration
 License & Contact
 License: MIT (update if different).
 
+---
 
 ## Contact
 **Email:** olubusuyiisaiah27@gmail.com
