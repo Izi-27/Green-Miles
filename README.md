@@ -234,4 +234,9 @@ Use issues for requests and bug reports.
 Labels: area/frontend, area/backend, area/zk, area/integration
 License & Contact
 License: MIT (update if different).
-Contact: Add your team’s emails, Discord, or GitHub org here.
+
+
+## Contact
+**Email:** olubusuyiisaiah27@gmail.com
+**Discord:** big_izi
+
