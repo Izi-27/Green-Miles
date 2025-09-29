@@ -1,0 +1,465 @@
+﻿Green Miles - Product Requirements Document
+The Proof-of-Commute Network
+Version: 1.0
+Date: September 27, 2025
+Product Owner: [Your Name]
+Status: Draft
+________________
+
+
+Executive Summary
+Green Miles is a privacy-first blockchain-based platform that transforms sustainable commuting into verifiable climate action. The system converts green transportation choices (biking, walking, EVs, public transit, carpooling) into tradeable Green Miles Credits (GMC) while preserving user privacy through zero-knowledge proofs.
+Vision: Turn every step, ride, or bus trip into verifiable climate action.
+Mission: Create the world's most trusted and privacy-preserving mobility tracking system that incentivizes sustainable transportation choices.
+________________
+
+
+1. Problem Statement
+Primary Problems
+* Climate Impact: Transportation accounts for the largest source of urban CO₂ emissions
+* Trust Gap: Current carbon tracking solutions suffer from:
+   * Inaccurate self-reporting mechanisms
+   * Privacy-invasive GPS tracking
+   * Lack of verifiable, tamper-proof data
+* Market Demand: Employers, cities, and carbon markets need proof-based systems for:
+   * Corporate ESG reporting
+   * Urban planning decisions
+   * Verified carbon offset trading
+Market Opportunity
+* Global carbon credit market: $1B+ and growing 20% annually
+* Corporate sustainability spending: $300B+ globally
+* Smart city investments: $2.5T projected by 2030
+________________
+
+
+2. Product Objectives
+Primary Objectives
+1. Privacy-First Tracking: Create verifiable mobility data without compromising user location privacy
+2. Incentive Alignment: Convert sustainable commuting choices into tangible rewards (GMC tokens)
+3. Enterprise Value: Provide businesses and cities with actionable mobility insights
+4. Market Integration: Enable carbon credit trading based on verified transportation data
+Success Metrics
+* User Adoption: 1M+ verified commuters by Year 1
+* Carbon Impact: 100K+ tons CO₂ offset through verified trips
+* Enterprise Adoption: 1K+ companies/cities integrating GMC
+* Token Utility: GMC actively traded in carbon markets
+________________
+
+
+3. Target Users & Personas
+Primary Users
+1. Individual Commuters
+Profile: Environmentally conscious urban professionals, students Needs:
+* Earn rewards for sustainable transportation choices
+* Maintain location privacy
+* Track personal carbon impact Pain Points:
+* Lack of incentives for green commuting
+* Privacy concerns with tracking apps
+* Difficulty proving environmental impact
+2. Enterprise Customers
+Profile: HR managers, sustainability officers, facility managers Needs:
+* Encourage employee sustainable commuting
+* Track corporate carbon reduction goals
+* Generate ESG reports with verified data Pain Points:
+* Unverifiable self-reported data
+* Lack of employee engagement in sustainability programs
+* Difficulty measuring ROI on green initiatives
+3. Municipal Governments
+Profile: Urban planners, transportation departments, environmental agencies Needs:
+* Data-driven urban mobility planning
+* Track progress toward carbon reduction targets
+* Incentivize public transit adoption Pain Points:
+* Limited visibility into actual commuting patterns
+* Difficulty measuring policy effectiveness
+* Need for privacy-compliant data collection
+4. Carbon Market Participants
+Profile: Carbon traders, offset project developers, compliance buyers Needs:
+* Verified, tradeable carbon credits
+* Transparent, auditable emission reductions
+* Liquid carbon credit marketplace Pain Points:
+* Lack of verifiable micro-offset opportunities
+* Complex verification processes
+* Limited supply of high-quality credits
+________________
+
+
+4. Core Features & Requirements
+A. Smart Contracts (MVP Focus)
+4.1 Core Contracts Architecture
+GMC Token Contract
+Purpose: ERC-20 compatible token for Green Miles Credits Key Functions:
+// Core token operations
+mint(address user, uint256 amount) // Mint GMC for verified trips
+burn(address user, uint256 amount) // Burn GMC for redemptions
+transfer(address to, uint256 amount) // Standard ERC-20 transfer
+
+
+// Staking & rewards
+stake(uint256 amount, uint256 duration) // Stake GMC for bonus rewards
+unstake(uint256 stakeId) // Unstake with accumulated rewards
+calculateStakeRewards(uint256 stakeId) // View pending rewards
+
+
+Requirements:
+* Mintable only by verified proof contracts
+* Burnable for redemptions
+* Stakeable for additional rewards
+* Governance token capabilities (future)
+Trip Verification Contract
+Purpose: Validate and reward verified sustainable trips Key Functions:
+// Trip verification
+verifyTrip(bytes zkProof, TripData memory trip) // Verify ZK proof of trip
+calculateRewards(TripType tripType, uint256 distance) // Calculate GMC rewards
+claimRewards(uint256 tripId) // Claim GMC for verified trip
+
+
+// Configuration
+setEmissionFactors(TripType tripType, uint256 co2PerKm) // Set CO2 baselines
+setRewardRates(TripType tripType, uint256 gmcPerKm) // Set reward rates
+
+
+Trip Data Structure:
+struct TripData {
+    uint256 tripId;
+    address user;
+    TripType transportMode; // BIKE, WALK, EV, BUS, CARPOOL
+    uint256 distance; // in meters
+    uint256 timestamp;
+    uint256 carbonSaved; // calculated CO2 savings
+    bytes32 routeHash; // privacy-preserving route identifier
+}
+
+
+Device Registry Contract
+Purpose: Manage registered transportation devices and user verification Key Functions:
+// Device management
+registerDevice(bytes32 deviceId, DeviceType deviceType) // Register new device
+verifyDevice(bytes32 deviceId, bytes signature) // Verify device ownership
+revokeDevice(bytes32 deviceId) // Revoke compromised device
+
+
+// User verification
+linkDeviceToUser(address user, bytes32 deviceId) // Link verified device to user
+getUserDevices(address user) // Get user's registered devices
+
+
+Enterprise Rewards Contract
+Purpose: Manage corporate sponsorship and employee rewards programs Key Functions:
+// Corporate programs
+createCampaign(CampaignParams memory params) // Create corporate challenge
+sponsorRewards(uint256 campaignId, uint256 amount) // Fund campaign rewards
+distributeCorporateRewards(uint256 campaignId) // Distribute to participants
+
+
+// Employee verification
+addEmployee(address employee, bytes32 companyId) // Add verified employee
+removeEmployee(address employee, bytes32 companyId) // Remove employee
+
+
+Carbon Credits Contract
+Purpose: Convert GMC into verified carbon credits for trading Key Functions:
+// Carbon credit generation
+generateCredits(uint256 gmcAmount) // Convert GMC to carbon credits
+retireCredits(uint256 creditAmount, string memory purpose) // Retire for offsetting
+transferCredits(address to, uint256 amount) // Transfer credits
+
+
+// Market operations
+listForSale(uint256 amount, uint256 pricePerTon) // List credits for sale
+purchaseCredits(uint256 listingId) // Purchase listed credits
+
+
+4.2 Contract Security Requirements
+* Access Control: Role-based permissions with multi-sig admin functions
+* Pausability: Emergency pause functionality for all contracts
+* Upgradeability: Proxy pattern for future upgrades while preserving state
+* Rate Limiting: Anti-spam mechanisms for trip verification
+* Audit Requirements: Full security audit before mainnet deployment
+4.3 Integration Requirements
+* IoTeX Blockchain: Deploy on IoTeX L1 for device connectivity
+* ZK Proof Verification: Integrate with Quicksilver for privacy-preserving proofs
+* Oracle Integration: Chainlink oracles for real-time carbon pricing
+* Cross-chain Bridge: Enable GMC transfer to other blockchains (future)
+B. Dashboard System (MVP Focus)
+4.1 User Dashboard
+Core Dashboard Features
+Trip Tracking Interface
+* Real-time trip logging and verification status
+* Interactive map showing verified green routes
+* Carbon savings calculator and visualizations
+* GMC balance and earning history
+Rewards Management
+* GMC wallet with transaction history
+* Redemption marketplace integration
+* Staking interface with APY calculator
+* Achievement badges and milestone tracking
+Privacy Controls
+* Data sharing preferences
+* ZK proof transparency settings
+* Device management interface
+* Privacy audit logs
+Technical Requirements:
+interface UserDashboard {
+  // Trip data
+  trips: Trip[];
+  totalDistance: number;
+  carbonSaved: number;
+  gmcEarned: number;
+  
+  // Rewards
+  gmcBalance: number;
+  stakedGMC: number;
+  pendingRewards: number;
+  achievementBadges: Badge[];
+  
+  // Privacy
+  privacySettings: PrivacyConfig;
+  connectedDevices: Device[];
+  zkProofHistory: ZKProof[];
+}
+
+
+4.2 Enterprise Dashboard
+Corporate Analytics Interface
+Team Performance Metrics
+* Employee participation rates
+* Aggregate carbon savings by department
+* Leaderboards and challenges
+* Cost savings from reduced parking/transport
+Campaign Management
+* Create and manage green commuting challenges
+* Set custom reward structures
+* Budget allocation and tracking
+* ROI analysis on sustainability investments
+ESG Reporting
+* Automated sustainability reports
+* Verified carbon reduction data
+* Employee engagement metrics
+* Integration with existing ESG platforms
+Technical Architecture:
+interface EnterpriseDashboard {
+  // Analytics
+  employeeMetrics: EmployeeMetrics[];
+  carbonReductions: CarbonData[];
+  participationRates: ParticipationData[];
+  costSavings: FinancialMetrics;
+  
+  // Campaign management
+  activeCampaigns: Campaign[];
+  rewardBudget: BudgetAllocation;
+  leaderboards: Leaderboard[];
+  
+  // Reporting
+  esgReports: ESGReport[];
+  dataExports: ExportConfig[];
+}
+
+
+4.3 City/Government Dashboard
+Urban Mobility Analytics
+Transportation Insights
+* City-wide commuting pattern analysis
+* Public transit adoption rates
+* Infrastructure utilization metrics
+* Carbon emission reduction tracking
+Policy Impact Analysis
+* Before/after analysis of transportation policies
+* Route optimization recommendations
+* Public transit demand forecasting
+* Air quality correlation analysis
+Planning Tools
+* Heat maps of green commuting corridors
+* Infrastructure investment recommendations
+* Carbon target progress tracking
+* Budget allocation optimization
+4.4 Dashboard Technical Requirements
+Frontend Stack
+* Framework: React 18+ with TypeScript
+* State Management: Redux Toolkit with RTK Query
+* UI Library: Tailwind CSS with custom design system
+* Charts: Recharts for data visualizations
+* Maps: Mapbox GL JS for route visualization
+* Authentication: Web3 wallet integration (MetaMask, WalletConnect)
+Backend API Requirements
+// Core API endpoints
+GET /api/users/:userId/dashboard // User dashboard data
+GET /api/enterprises/:companyId/analytics // Enterprise analytics
+GET /api/cities/:cityId/mobility // City mobility data
+GET /api/trips/verify // Trip verification status
+POST /api/rewards/claim // Claim GMC rewards
+
+
+Real-time Features
+* WebSocket connections for live trip tracking
+* Push notifications for reward milestones
+* Real-time leaderboard updates
+* Live carbon savings counters
+Performance Requirements
+* Load Time: < 2 seconds initial dashboard load
+* API Response: < 500ms for standard queries
+* Real-time Updates: < 100ms WebSocket latency
+* Scalability: Support 100K+ concurrent users
+C. Supporting Features (Future Phases)
+Privacy-Preserving Tracking
+* ZK Proof Generation: Quicksilver integration for trip verification
+* Device Registration: IoTeX ioID for secure device management
+* Location Anonymization: Route hashing without GPS exposure
+AI Optimization Layer
+* Route Recommendations: AI-powered sustainable route suggestions
+* Demand Forecasting: Predict public transit usage patterns
+* Carbon Impact Modeling: City-level CO₂ reduction predictions
+Community & Gamification
+* Challenges: Daily/weekly/monthly green commuting competitions
+* NFT Rewards: Achievement badges as collectible NFTs
+* Social Features: Share achievements and compete with friends
+________________
+
+
+5. Technical Architecture
+5.1 System Overview
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Mobile App    │    │   Web Dashboard  │    │  Enterprise API │
+└─────────┬───────┘    └────────┬─────────┘    └─────────┬───────┘
+          │                     │                        │
+          └─────────────────────┼────────────────────────┘
+                                │
+                    ┌───────────▼────────────┐
+                    │      Backend API       │
+                    │   (Node.js/Express)    │
+                    └───────────┬────────────┘
+                                │
+                ┌───────────────┼───────────────┐
+                │               │               │
+        ┌───────▼────────┐ ┌────▼────────┐ ┌───▼──────────┐
+        │ IoTeX Blockchain│ │ 0G Network  │ │ Traditional  │
+        │  Smart Contracts│ │ AI & Storage│ │   Database   │
+        └────────────────┘ └─────────────┘ └──────────────┘
+
+
+5.2 Data Flow Architecture
+1. Trip Initiation: User starts trip via mobile app
+2. Privacy-Preserving Tracking: Location data processed locally
+3. ZK Proof Generation: Quicksilver creates verifiable proof
+4. On-Chain Verification: Smart contract validates proof
+5. Reward Distribution: GMC tokens minted to user wallet
+6. Dashboard Update: Real-time UI updates via WebSocket
+5.3 Security Architecture
+* End-to-End Encryption: All sensitive data encrypted in transit
+* Zero-Knowledge Proofs: Location privacy preserved
+* Smart Contract Security: Multi-sig admin controls, audit trail
+* API Security: Rate limiting, authentication, input validation
+________________
+
+
+6. MVP Scope & Development Phases
+Phase 1: Core MVP (0-3 months) - Current Focus
+Scope: Basic proof-of-concept with essential functionality
+Smart Contracts:
+* [ ] GMC Token Contract (ERC-20)
+* [ ] Trip Verification Contract (basic)
+* [ ] Device Registry Contract
+* [ ] Basic rewards distribution
+Dashboard Features:
+* [ ] User registration and wallet connection
+* [ ] Basic trip logging interface
+* [ ] GMC balance and transaction history
+* [ ] Simple rewards claiming
+Transportation Modes: Walking and biking only Privacy: Basic route hashing (full ZK proofs in Phase 2) Deployment: IoTeX testnet
+Phase 2: Enhanced Features (3-6 months)
+Added Features:
+* ZK proof integration (Quicksilver)
+* Enterprise dashboard
+* Bus and EV trip tracking
+* Advanced analytics
+Phase 3: Market Integration (6-12 months)
+Added Features:
+* AI route optimization
+* City partnership dashboards
+* Carbon market integration
+* Cross-chain functionality
+________________
+
+
+7. Success Metrics & KPIs
+User Engagement
+* Daily Active Users (DAU): Target 10K+ by end of Phase 1
+* Monthly Active Users (MAU): Target 50K+ by end of Phase 1
+* Trip Verification Rate: >95% successful verification
+* User Retention: >60% 30-day retention
+Business Metrics
+* GMC Token Circulation: Target 1M+ GMC minted in Phase 1
+* Enterprise Sign-ups: Target 50+ companies in Phase 1
+* Revenue Streams: Platform fees, enterprise subscriptions, carbon credit trading
+* Carbon Impact: Target 1K+ tons CO₂ offset in Phase 1
+Technical Performance
+* System Uptime: >99.9% availability
+* Transaction Throughput: Handle 1K+ trips/hour
+* API Response Times: <500ms average
+* Smart Contract Gas Efficiency: Optimize for IoTeX network costs
+________________
+
+
+8. Risk Assessment & Mitigation
+Technical Risks
+Risk: Smart contract vulnerabilities Mitigation: Comprehensive security audits, gradual rollout, emergency pause functionality
+Risk: Scalability limitations Mitigation: Layer 2 solutions, efficient data structures, caching strategies
+Market Risks
+Risk: Low user adoption Mitigation: Strong incentive design, partnership with employers/cities, referral programs
+Risk: Regulatory challenges Mitigation: Legal compliance review, privacy-first design, transparent operations
+Operational Risks
+Risk: Team scaling challenges Mitigation: Clear documentation, automated testing, DevOps best practices
+________________
+
+
+9. Go-to-Market Strategy
+Phase 1 Launch Strategy
+1. Beta Testing: Recruit 100 early adopters from local cycling/environmental communities
+2. Partnership Pipeline: Identify 10 potential enterprise/city partners
+3. Developer Community: Open-source components to build ecosystem
+4. Content Marketing: Environmental impact case studies, technical blog posts
+User Acquisition
+* Employer Partnerships: Launch with progressive companies
+* City Pilots: Partner with sustainability-focused municipalities
+* Community Building: Environmental and cycling advocacy groups
+* Influencer Partnerships: Sustainability thought leaders
+Revenue Model
+* Freemium Model: Free for individuals, paid tiers for enterprises
+* Transaction Fees: Small percentage on GMC redemptions
+* Enterprise Licensing: Annual subscriptions for advanced features
+* Carbon Market Fees: Commission on carbon credit transactions
+________________
+
+
+10. Resource Requirements
+Development Team (MVP Phase)
+* Blockchain Developer: Smart contract development and security
+* Full-stack Developer: Dashboard and API development
+* Mobile Developer: Cross-platform app development
+* DevOps Engineer: Infrastructure and deployment
+* Product Manager: Coordination and requirement management
+Infrastructure Costs
+* Cloud Hosting: $2K/month (AWS/GCP)
+* Blockchain Costs: $1K/month (IoTeX network fees)
+* Third-party APIs: $500/month (maps, analytics)
+* Security Audits: $50K one-time
+* Legal/Compliance: $25K setup
+Timeline & Milestones
+Month 1:
+* Smart contract architecture finalized
+* Basic dashboard wireframes and design
+* Development environment setup
+Month 2:
+* Core smart contracts deployed to testnet
+* MVP dashboard frontend development
+* API integration with blockchain
+Month 3:
+* End-to-end testing and bug fixes
+* Beta user onboarding
+* Security audit and fixes
+* Mainnet deployment preparation
+________________
+
+
+Conclusion
+Green Miles represents a significant opportunity to create verifiable, privacy-preserving incentives for sustainable transportation. The MVP focus on robust smart contracts and intuitive dashboards will establish a strong foundation for the broader vision of a global proof-of-commute network.
+The combination of blockchain verification, privacy preservation, and tangible rewards addresses real market needs while building toward a more sustainable urban mobility future.

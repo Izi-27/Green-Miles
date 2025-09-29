@@ -1,0 +1,157 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  address     String   @unique
+  email       String?  @unique
+  username    String?  @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Profile
+  firstName   String?
+  lastName    String?
+  avatar      String?
+  preferences Json?
+  
+  // Blockchain data
+  gmcBalance  Decimal  @default(0)
+  totalTrips  Int      @default(0)
+  totalDistance Int    @default(0)
+  carbonSaved   Decimal @default(0)
+  
+  trips       Trip[]
+  devices     Device[]
+  stakes      Stake[]
+  
+  @@map("users")
+}
+
+model Trip {
+  id            String      @id @default(cuid())
+  tripId        BigInt      @unique
+  userId        String
+  transportMode TransportMode
+  distance      Int
+  carbonSaved   Decimal
+  gmcEarned     Decimal
+  routeHash     String
+  startTime     DateTime
+  endTime       DateTime?
+  status        TripStatus  @default(PENDING)
+  txHash        String?
+  
+  user          User        @relation(fields: [userId], references: [id])
+  
+  @@map("trips")
+}
+
+model Device {
+  id          String     @id @default(cuid())
+  deviceId    String     @unique
+  userId      String
+  deviceType  DeviceType
+  name        String
+  metadata    Json?
+  active      Boolean    @default(true)
+  registeredAt DateTime  @default(now())
+  
+  user        User       @relation(fields: [userId], references: [id])
+  
+  @@map("devices")
+}
+
+model Stake {
+  id          String   @id @default(cuid())
+  userId      String
+  amount      Decimal
+  startTime   DateTime @default(now())
+  duration    Int      // Duration in seconds
+  endTime     DateTime
+  rewardRate  Int      // Basis points (e.g., 500 = 5%)
+  claimed     Boolean  @default(false)
+  txHash      String?
+  
+  user        User     @relation(fields: [userId], references: [id])
+  
+  @@map("stakes")
+}
+
+model Company {
+  id          String   @id @default(cuid())
+  companyId   String   @unique // Blockchain identifier
+  name        String
+  adminAddress String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  active      Boolean  @default(true)
+  
+  campaigns   Campaign[]
+  employees   Employee[]
+  
+  @@map("companies")
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  campaignId  BigInt   @unique
+  companyId   String
+  name        String
+  startTime   DateTime
+  endTime     DateTime
+  totalBudget Decimal
+  spentBudget Decimal  @default(0)
+  rewardPerKm Decimal
+  allowedModes Json    // Array of TransportMode
+  active      Boolean  @default(true)
+  
+  company     Company  @relation(fields: [companyId], references: [id])
+  
+  @@map("campaigns")
+}
+
+model Employee {
+  id          String   @id @default(cuid())
+  userId      String
+  companyId   String
+  registeredAt DateTime @default(now())
+  active      Boolean  @default(true)
+  
+  company     Company  @relation(fields: [companyId], references: [id])
+  
+  @@unique([userId, companyId])
+  @@map("employees")
+}
+
+enum TransportMode {
+  WALK
+  BIKE
+  EV
+  BUS
+  CARPOOL
+}
+
+enum TripStatus {
+  PENDING
+  VERIFIED
+  FAILED
+  REWARDS_CLAIMED
+}
+
+enum DeviceType {
+  SMARTPHONE
+  FITNESS_TRACKER
+  BIKE_COMPUTER
+  EV_ONBOARD
+  OBD_MODULE
+}
