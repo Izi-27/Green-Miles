@@ -42,8 +42,11 @@
   --color-neutral-900: #171717;
   --color-neutral-950: #0a0a0a;
 
-  /* Custom shadow token */
+  /* Morphism shadows and effects */
+  --shadow-morphism: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  --shadow-morphism-green: 0 8px 32px 0 rgba(34, 197, 94, 0.2);
   --shadow-premium: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --backdrop-blur: blur(16px);
 }
 
 :root {
@@ -55,19 +58,49 @@
 body {
   color: #ffffff;
   background: #000000;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Morphism component styles */
+.morphism-glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--shadow-morphism);
+}
+
+.morphism-green {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  box-shadow: var(--shadow-morphism-green);
+}
+
+.morphism-dark {
+  background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
 }
 
 /* Component styles */
 .btn-primary {
-  background-color: var(--color-secondary-500);
+  background: linear-gradient(135deg, var(--color-secondary-500) 0%, var(--color-secondary-600) 100%);
   color: white;
   font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  transition: all 200ms;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 300ms ease;
+  border: none;
+  box-shadow: 0 4px 15px 0 rgba(34, 197, 94, 0.3);
 }
 .btn-primary:hover {
-  background-color: var(--color-secondary-600);
+  background: linear-gradient(135deg, var(--color-secondary-600) 0%, var(--color-secondary-700) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px 0 rgba(34, 197, 94, 0.4);
 }
 
 .btn-secondary {

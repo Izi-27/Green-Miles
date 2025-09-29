@@ -29,66 +29,107 @@ const COLORS = ['#22c55e', '#16a34a', '#15803d', '#166534'];
 export default function Dashboard() {
   return (
     <DashboardLayout title="Dashboard">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Stats Cards */}
-        <div style={{backgroundColor: '#111111', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', border: '1px solid #333333'}} className="flex items-center p-6 space-x-4">
-          <div style={{backgroundColor: '#052e16', borderRadius: '9999px', padding: '0.75rem'}}>
-            <Icon icon="carbon:earth" style={{fontSize: '1.5rem', color: '#22c55e'}} />
+        <div className="morphism-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300 group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-4 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl backdrop-blur-sm border border-green-400/30">
+              <Icon icon="solar:leaf-bold-duotone" className="text-3xl text-green-400" />
+            </div>
+            <div className="text-right">
+              <p className="text-green-300 text-sm font-medium uppercase tracking-wider">CO2 Saved</p>
+              <h3 className="text-3xl font-bold text-white mt-1">128.5 <span className="text-lg text-green-300">kg</span></h3>
+            </div>
           </div>
-          <div>
-            <p style={{color: '#a3a3a3', fontSize: '0.875rem'}}>Total CO2 Saved</p>
-            <h3 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff'}}>128.5 kg</h3>
-          </div>
-        </div>
-        
-        <div style={{backgroundColor: '#111111', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', border: '1px solid #333333'}} className="flex items-center p-6 space-x-4">
-          <div style={{backgroundColor: '#052e16', borderRadius: '9999px', padding: '0.75rem'}}>
-            <Icon icon="carbon:money" style={{fontSize: '1.5rem', color: '#22c55e'}} />
-          </div>
-          <div>
-            <p style={{color: '#a3a3a3', fontSize: '0.875rem'}}>GMC Tokens Earned</p>
-            <h3 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff'}}>245.8 GMC</h3>
+          <div className="flex items-center space-x-2 text-green-300">
+            <Icon icon="solar:arrow-up-bold" className="text-sm" />
+            <span className="text-sm font-medium">+12.3% from last month</span>
           </div>
         </div>
         
-        <div style={{backgroundColor: '#111111', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', border: '1px solid #333333'}} className="flex items-center p-6 space-x-4">
-          <div style={{backgroundColor: '#052e16', borderRadius: '9999px', padding: '0.75rem'}}>
-            <Icon icon="carbon:road" style={{fontSize: '1.5rem', color: '#22c55e'}} />
+        <div className="morphism-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300 group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-4 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl backdrop-blur-sm border border-green-400/30">
+              <Icon icon="solar:wallet-money-bold-duotone" className="text-3xl text-green-400" />
+            </div>
+            <div className="text-right">
+              <p className="text-green-300 text-sm font-medium uppercase tracking-wider">GMC Tokens</p>
+              <h3 className="text-3xl font-bold text-white mt-1">245.8 <span className="text-lg text-green-300">GMC</span></h3>
+            </div>
           </div>
-          <div>
-            <p style={{color: '#a3a3a3', fontSize: '0.875rem'}}>Total Distance</p>
-            <h3 style={{fontSize: '1.5rem', fontWeight: 'bold', color: '#ffffff'}}>47.7 km</h3>
+          <div className="flex items-center space-x-2 text-green-300">
+            <Icon icon="solar:arrow-up-bold" className="text-sm" />
+            <span className="text-sm font-medium">+8.7% from last week</span>
+          </div>
+        </div>
+        
+        <div className="morphism-glass rounded-2xl p-6 hover:scale-105 transition-all duration-300 group">
+          <div className="flex items-center justify-between mb-4">
+            <div className="p-4 bg-gradient-to-br from-green-500/20 to-green-600/20 rounded-2xl backdrop-blur-sm border border-green-400/30">
+              <Icon icon="solar:map-point-bold-duotone" className="text-3xl text-green-400" />
+            </div>
+            <div className="text-right">
+              <p className="text-green-300 text-sm font-medium uppercase tracking-wider">Distance</p>
+              <h3 className="text-3xl font-bold text-white mt-1">47.7 <span className="text-lg text-green-300">km</span></h3>
+            </div>
+          </div>
+          <div className="flex items-center space-x-2 text-green-300">
+            <Icon icon="solar:arrow-up-bold" className="text-sm" />
+            <span className="text-sm font-medium">+15.2% this week</span>
           </div>
         </div>
         
         {/* Trip Activity Chart */}
-        <div style={{backgroundColor: '#111111', borderRadius: '0.5rem', boxShadow: '0 1px 3px rgba(0,0,0,0.3)', border: '1px solid #333333'}} className="col-span-1 lg:col-span-2 p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 style={{fontSize: '1.125rem', fontWeight: '600', color: '#ffffff'}}>Trip Activity</h3>
+        <div className="morphism-glass rounded-2xl p-8 col-span-1 lg:col-span-2">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">Trip Activity</h3>
+              <p className="text-green-300 text-sm">Your weekly eco-friendly journey</p>
+            </div>
             <div className="flex space-x-2">
-              <button style={{padding: '0.25rem 0.75rem', fontSize: '0.875rem', borderRadius: '9999px', backgroundColor: '#22c55e', color: 'white'}}>Week</button>
-              <button style={{padding: '0.25rem 0.75rem', fontSize: '0.875rem', borderRadius: '9999px', color: '#a3a3a3'}} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>Month</button>
-              <button style={{padding: '0.25rem 0.75rem', fontSize: '0.875rem', borderRadius: '9999px', color: '#a3a3a3'}} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#333333'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>Year</button>
+              <button className="px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-medium text-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                Week
+              </button>
+              <button className="px-4 py-2 text-green-300 hover:bg-white/10 rounded-xl font-medium text-sm transition-all duration-300">
+                Month
+              </button>
+              <button className="px-4 py-2 text-green-300 hover:bg-white/10 rounded-xl font-medium text-sm transition-all duration-300">
+                Year
+              </button>
             </div>
           </div>
           
-          <div className="h-64">
+          <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 data={tripData}
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
-                <CartesianGrid strokeDasharray="3 3" stroke="#333333" />
-                <XAxis dataKey="name" stroke="#a3a3a3" />
-                <YAxis stroke="#a3a3a3" />
-                <Tooltip contentStyle={{backgroundColor: '#222222', color: '#ffffff', borderRadius: '0.375rem', boxShadow: '0 4px 6px rgba(0,0,0,0.3)', border: '1px solid #444444'}} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="name" stroke="#a3a3a3" fontSize={12} />
+                <YAxis stroke="#a3a3a3" fontSize={12} />
+                <Tooltip 
+                  contentStyle={{
+                    backgroundColor: 'rgba(17, 17, 17, 0.9)',
+                    color: '#ffffff',
+                    borderRadius: '12px',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    backdropFilter: 'blur(16px)'
+                  }} 
+                />
                 <Area 
                   type="monotone" 
                   dataKey="distance" 
                   stroke="#22c55e" 
-                  fill="#052e16" 
-                  fillOpacity={0.8} 
+                  fill="url(#colorGradient)" 
+                  strokeWidth={3}
                 />
+                <defs>
+                  <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#22c55e" stopOpacity={0.05}/>
+                  </linearGradient>
+                </defs>
               </AreaChart>
             </ResponsiveContainer>
           </div>
